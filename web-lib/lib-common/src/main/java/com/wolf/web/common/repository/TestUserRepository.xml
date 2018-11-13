@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wolf.web.common.repository.TestUserRepository">
+    <resultMap type="com.wolf.web.common.domain.dto.TestUserDto" id="testUserMap">
+        <result column="id" property="id"/>
+    </resultMap>
+
+    <select id="list" resultMap="testUserMap">
+        select * from user
+    </select>
+
+    <select id="load" resultMap="testUserMap">
+        select * from user
+        <where>
+            1=1
+            <if test="name !=null and name !=''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="id !=null and id !=''">
+                and id=#{id}
+            </if>
+        </where>
+    </select>
+
+
+    <insert id="insert"
+            parameterType="com.wolf.web.common.domain.dto.TestUserDto"
+            useGeneratedKeys="true"
+            keyProperty="id">
+        insert into `user`
+        (
+        `name`
+        )
+        values
+        (
+        #{name}
+        )
+    </insert>
+    <update id="update" parameterType="com.wolf.web.common.domain.dto.TestUserDto">
+        update user
+        <set>
+            <if test="name != null and name!=''">
+                `name` = #{name},
+            </if>
+        </set>
+
+        where id=#{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        delete from `user`
+        where id=#{id}
+    </delete>
+
+</mapper>
